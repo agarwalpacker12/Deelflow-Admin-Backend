@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealflow AI Proxy Server</title>
+</head>
+<body>
+    <h1>Dealflow Development Proxy Server</h1>
+    <p>This is the proxy server running on port 3000.</p>
+    <p>All requests are being proxied to the appropriate services:</p>
+    <ul>
+        <li><strong>/api</strong> and <strong>/sanctum</strong> → Laravel backend (port 8000)</li>
+        <li><strong>All other requests</strong> → React frontend (port 5173)</li>
+    </ul>
+</body>
+</html>
