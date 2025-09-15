@@ -1,4 +1,4 @@
-
+    
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
@@ -62,4 +62,6 @@ urlpatterns = [
     path('campaign_property_stats/', views.campaign_property_stats, name='campaign_property_stats'),
     path('campaign_performance_overview/', views.campaign_performance_overview, name='campaign_performance_overview'),
     path('channel_response_rates/', views.channel_response_rates, name='channel_response_rates'),
+    path('api/ai-metrics/overall-accuracy/', views.get_overall_accuracy, name='overall_accuracy'),
+    path('api/market-alerts/recent/', views.recent_market_alerts, name='recent_market_alerts'),
 ]

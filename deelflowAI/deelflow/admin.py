@@ -3,6 +3,21 @@ from .models import (
     BusinessMetrics, HistoricalMetrics, ActivityFeed,
     ComplianceStatus, User, Organization
 )
+from .models import (
+    VoiceAICallMetrics,
+    VisionAnalysisMetrics,
+    Permission,
+    Role,
+    PropertyAIAnalysis,
+    NLPProcessingMetrics,
+    BlockchainTxnMetrics,
+    Campaign,
+    Lead,
+    Channel,
+    ChannelResponseRate,
+    CampaignPerformance,
+    CampaignPropertyStats,
+)
 
 admin.site.site_header = "DeelFlow Administration"
 admin.site.site_title = "DeelFlow Admin Portal"
@@ -30,6 +45,57 @@ class OrganizationAdmin(admin.ModelAdmin):
     search_fields = ("name", "slug", "uuid")
     list_filter = ("subscription_status", "created_at")
 
+@admin.register(VoiceAICallMetrics)
+class VoiceAICallMetricsAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(VisionAnalysisMetrics)
+class VisionAnalysisMetricsAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Permission)
+class PermissionAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(PropertyAIAnalysis)
+class PropertyAIAnalysisAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(NLPProcessingMetrics)
+class NLPProcessingMetricsAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(BlockchainTxnMetrics)
+class BlockchainTxnMetricsAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Campaign)
+class CampaignAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Lead)
+class LeadAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Channel)
+class ChannelAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(ChannelResponseRate)
+class ChannelResponseRateAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(CampaignPerformance)
+class CampaignPerformanceAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(CampaignPropertyStats)
+class CampaignPropertyStatsAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):

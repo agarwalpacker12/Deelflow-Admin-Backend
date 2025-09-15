@@ -1,9 +1,29 @@
+
 # --- Required imports ---
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import VoiceAICallMetrics, VisionAnalysisMetrics
 import requests
 from twilio.rest import Client
+
+# API view to get the latest overall AI accuracy
+@api_view(['GET'])
+def get_overall_accuracy(request):
+    latest_metrics = VisionAnalysisMetrics.objects.order_by('-updated_at').first()
+    previous_metrics = VisionAnalysisMetrics.objects.order_by('-updated_at')[1] if VisionAnalysisMetrics.objects.count() > 1 else None
+
+    if latest_metrics:
+        overall_accuracy = float(latest_metrics.accuracy_rate)
+        percentage = 0
+        if previous_metrics:
+            previous_accuracy = float(previous_metrics.accuracy_rate)
+            if previous_accuracy != 0:
+                percentage = ((overall_accuracy - previous_accuracy) / previous_accuracy) * 100
+        return Response({
+            'overall_accuracy': f"{overall_accuracy}%",
+            'change_percentage': round(percentage, 2)
+        })
+    return Response({'overall_accuracy': None, 'change_percentage': None})
 
 # --- AI Performance Metrics via 3rd Party APIs ---
 
@@ -319,34 +339,78 @@ def get_properties_listed(request):
 # API view to get the latest AI conversations
 @api_view(['GET'])
 def get_ai_conversations(request):
-	latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
-	if latest_metrics:
-		return Response({'ai_conversations': str(latest_metrics.ai_conversations)})
-	return Response({'ai_conversations': None})
+    latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
+    previous_metrics = BusinessMetrics.objects.order_by('-report_date')[1] if BusinessMetrics.objects.count() > 1 else None
+
+    if latest_metrics:
+        ai_conversations = float(latest_metrics.ai_conversations)
+        percentage = 0
+        if previous_metrics:
+            previous_ai_conversations = float(previous_metrics.ai_conversations)
+            if previous_ai_conversations != 0:
+                percentage = ((ai_conversations - previous_ai_conversations) / previous_ai_conversations) * 100
+        return Response({
+            'ai_conversations': str(ai_conversations),
+            'change_percentage': round(percentage, 2)
+        })
+    return Response({'ai_conversations': None, 'change_percentage': None})
 
 # API view to get the latest total deals
 @api_view(['GET'])
 def get_total_deals(request):
-	latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
-	if latest_metrics:
-		return Response({'total_deals': latest_metrics.total_deals})
-	return Response({'total_deals': None})
+    latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
+    previous_metrics = BusinessMetrics.objects.order_by('-report_date')[1] if BusinessMetrics.objects.count() > 1 else None
+
+    if latest_metrics:
+        total_deals = float(latest_metrics.total_deals)
+        percentage = 0
+        if previous_metrics:
+            previous_deals = float(previous_metrics.total_deals)
+            if previous_deals != 0:
+                percentage = ((total_deals - previous_deals) / previous_deals) * 100
+        return Response({
+            'total_deals': str(total_deals),
+            'change_percentage': round(percentage, 2)
+        })
+    return Response({'total_deals': None, 'change_percentage': None})
 
 # API view to get the latest monthly profit
 @api_view(['GET'])
 def get_monthly_profit(request):
-	latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
-	if latest_metrics:
-		return Response({'monthly_profit': str(latest_metrics.monthly_profit)})
-	return Response({'monthly_profit': None})
+    latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
+    previous_metrics = BusinessMetrics.objects.order_by('-report_date')[1] if BusinessMetrics.objects.count() > 1 else None
+
+    if latest_metrics:
+        monthly_profit = float(latest_metrics.monthly_profit)
+        percentage = 0
+        if previous_metrics:
+            previous_monthly_profit = float(previous_metrics.monthly_profit)
+            if previous_monthly_profit != 0:
+                percentage = ((monthly_profit - previous_monthly_profit) / previous_monthly_profit) * 100
+        return Response({
+            'monthly_profit': str(monthly_profit),
+            'change_percentage': round(percentage, 2)
+        })
+    return Response({'monthly_profit': None, 'change_percentage': None})
 
 # API view to get the latest voice calls count
 @api_view(['GET'])
 def get_voice_calls_count(request):
-	latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
-	if latest_metrics:
-		return Response({'voice_calls_count': latest_metrics.voice_calls_count})
-	return Response({'voice_calls_count': None})
+    latest_metrics = BusinessMetrics.objects.order_by('-report_date').first()
+    previous_metrics = BusinessMetrics.objects.order_by('-report_date')[1] if BusinessMetrics.objects.count() > 1 else None
+
+    if latest_metrics:
+        voice_calls_count = float(latest_metrics.voice_calls_count)
+        percentage = 0
+        if previous_metrics:
+            previous_voice_calls_count = float(previous_metrics.voice_calls_count)
+            if previous_voice_calls_count != 0:
+                percentage = ((voice_calls_count - previous_voice_calls_count) / previous_voice_calls_count) * 100
+        return Response({
+            'voice_calls_count': str(voice_calls_count),
+            'change_percentage': round(percentage, 2)
+        })
+    return Response({'voice_calls_count': None, 'change_percentage': None})
 
 # API view to get the latest compliance status
 @api_view(['GET'])
@@ -1267,3 +1331,31 @@ def channel_response_rates(request):
             {"status": "success", "message": f"Failed to fetch channel response rates: {str(e)}"},
             status=200
         )
+# API view to get recent market alerts
+@api_view(['GET'])
+def recent_market_alerts(request):
+    # Mocked recent market alerts data
+    alerts = [
+        {
+            "id": 1,
+            "type": "price_drop",
+            "message": "Property at 1247 Oak Street dropped price by 5%.",
+            "timestamp": "2025-09-15T10:30:00Z"
+        },
+        {
+            "id": 2,
+            "type": "new_listing",
+            "message": "New property listed in Dallas, TX.",
+            "timestamp": "2025-09-15T09:00:00Z"
+        },
+        {
+            "id": 3,
+            "type": "market_trend",
+            "message": "Dallas market shows increased buyer activity.",
+            "timestamp": "2025-09-14T18:45:00Z"
+        }
+    ]
+    return Response({
+        "status": "success",
+        "alerts": alerts
+    })
